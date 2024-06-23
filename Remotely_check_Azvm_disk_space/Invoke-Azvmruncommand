@@ -1,0 +1,17 @@
+# this script is to run command on remote az vm
+
+
+$response = Invoke-AzVMRunCommand -ResourceGroupName 'west us' -VMName 'RNAP02024HV001' -CommandId 'RunPowershellScript'
+
+-ScriptPath 'D:\DevOps\Azure-powershell\For_azurevm_check_disk_space.ps1'
+
+$output = $response.Value[0].Message
+
+foreach ($string in $($output.Split("`n"))){
+    if($string -match '\w' -and !($string.startwith('Name'))){
+        $disk = $string.Split(' ').Trim() | Where-Object{$_ -match '\w'}
+        $($disk[0] -as [string]) + ' drive is having ' + $($disk[2].Split(" ")[0] -as [string]) + ' GB of free space.'
+
+    }
+    
+}
