@@ -1,0 +1,4 @@
+# this script is work with invoke command, it's the script which invoke command will run
+
+
+Return $(Get-PSDrive) | Where-Object {$_.Free -gt 0}
